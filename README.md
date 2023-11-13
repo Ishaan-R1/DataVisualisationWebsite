@@ -27,5 +27,5 @@ DynamoDB for Cloud Storage
 TypeScript
 WebSockets for Real-time Data Updates
 
-Deployment
+## Deployment
 The web application is hosted on the cloud using serverless technology using an S3 bucket.
