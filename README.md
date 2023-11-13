@@ -3,9 +3,7 @@
 This web application leverages web services to display numerical data, predictions, and sentiment analysis results. 
 
 The primary features include:
-Visualization of Numerical Data
-Predictions Using Machine Learning
-Sentiment Analysis Results
+Visualization of Numerical Data, Predictions Using Machine Learning, Sentiment Analysis Results.
 
 ## Features
 1. Numerical Data Visualization
