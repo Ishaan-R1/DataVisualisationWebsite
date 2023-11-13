@@ -1,0 +1,257 @@
+.tab {
+  overflow: hidden;
+  /* border: 1px solid #ccc; */
+  background: rgb(0, 52, 99);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 52, 99, 1) 28%,
+    rgba(0, 5, 25, 1) 100%
+  );
+  color: white;
+  margin: auto;
+  width: 1119px;
+  border-radius: 15px 15px 0px 0px;
+
+}
+.linkOfTab {
+  margin: auto;
+  width: 50%;
+}
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  opacity: 0.5;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  /* background-color: black; */
+  background: rgb(50, 252, 254);
+  background: linear-gradient(
+    180deg,
+    rgba(50, 252, 254, 1) 0%,
+    rgba(0, 91, 251, 1) 68%
+  );
+}
+
+/* Style the tab content */
+.dataToDisplay {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+body {
+  /* background-color: #cccccc; */
+  /* background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 36%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
+  background: rgb(0, 52, 99);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 52, 99, 1) 28%,
+    rgba(0, 5, 25, 1) 100%
+  );
+}
+.container {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  /* border: 1px solid black; */
+}
+.backgroundImg {
+  height: 455px;
+  width: 1550px;
+  position: relative;
+  bottom: 15px;
+}
+.bdr {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  height: auto;
+  margin: auto;
+  width: 75%;
+  /* background-color: rgba(0, 91, 251, 1); */
+  background: rgb(50, 252, 254);
+  background: linear-gradient(
+    0deg,
+    rgba(50, 252, 254, 1) 4%,
+    rgba(0, 91, 251, 1) 71%
+  );
+  /* background: rgb(50, 252, 254); */
+  /* background: linear-gradient(
+    150deg,
+    rgba(50, 252, 254, 1) 12%,
+    rgba(0, 91, 251, 1) 51%
+  ); */
+  /* border: 1px solid red; */
+  position: relative;
+  bottom: 6px;
+  border-radius: 0px 0px 15px 15px;
+}
+.btn1 {
+  background: rgb(255, 0, 61);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 61, 1) 46%,
+    rgba(255, 255, 255, 1) 94%
+  );
+}
+.btn2 {
+  background: rgb(3, 70, 148);
+  background: linear-gradient(
+    90deg,
+    rgba(3, 70, 148, 1) 49%,
+    rgba(0, 43, 79, 1) 77%
+  );
+}
+.btn3 {
+  background: rgb(218, 41, 28);
+  background: linear-gradient(
+    90deg,
+    rgba(218, 41, 28, 1) 62%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+.btn4 {
+  background: rgb(200, 16, 46);
+  background: linear-gradient(
+    90deg,
+    rgba(200, 16, 46, 1) 18%,
+    rgba(76, 0, 19, 1) 100%
+  );
+}
+.btn5 {
+  background: rgb(108, 171, 221);
+  background: linear-gradient(
+    90deg,
+    rgba(108, 171, 221, 1) 18%,
+    rgba(246, 250, 250, 1) 100%
+  );
+}
+.btn1,
+.btn2,
+.btn3,
+.btn4,
+.btn5 {
+  margin: auto;
+  margin-left: 58px;
+  width: 150px;
+  height: 50px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8);
+  /* background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(121, 9, 36, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  ); */
+
+  border-radius: 10px;
+  color: white;
+}
+/* style social media icons on footer */
+.fa-instagram,
+.fa-snapchat,
+.fa-youtube,
+.fa-twitter,
+.fa-facebook {
+  background: #202020;
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+}
+.fa-twitter:hover,
+.fa-facebook:hover {
+  color: blue;
+}
+.fa-snapchat:hover {
+  color: yellow;
+}
+.fa-youtube:hover {
+  color: red;
+}
+.fa-instagram:hover {
+  color: purple;
+}
+.footer {
+  text-align: center;
+  background-color: #202020;
+  color: whitesmoke;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgb(0, 0, 0);
+  background-color: black;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+.logo {
+  height: 100px;
+  width: 180px;
+}
+.mt-4 {
+  position: relative;
+  left: 300px;
+  bottom: 300px;
+  transform: translate(-90%, -50%);
+  background: whitesmoke;
+  margin: auto;
+  width: 45%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);
+}
+.container2 {
+  position: relative;
+  bottom: 10px;
+  border: 1px solid black;
+}
+.wrapper {
+  position: relative;
+  left: 460px;
+  bottom: 300px;
+
+  background: whitesmoke /* rgba(0, 0, 0, 0.6) */;
+  width: 780px;
+  height: 340px;
+
+  border-radius: 10px;
+}
+.teamLogo {
+  margin-right: 9px;
+  width: 37px;
+  height: 43px;
+}

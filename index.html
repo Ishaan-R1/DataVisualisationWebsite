@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <ul>
+        <img class="logo" src="Images/logo3.png" alt="background Image" />
+    </ul>
+    <img class="backgroundImg" src="Images/banner3.jpg" alt="background Image" />
+    <div class="container2">
+        <div class="tab">
+            <button class="linkOfTab" onclick="switchTabs(event, 'Numerical')"
+                id="defaultPage">Numerical/Predictions</button>
+            <button class="linkOfTab" onclick="switchTabs(event, 'Sentiment')">Sentiment</button>
+        </div>
+        <div id="Numerical" class="dataToDisplay">
+            <div class="bdr">
+                <br>
+                <button type="button" class="btn1" onclick="plotData()"> <img src="Images/arsenalLogo.png" alt="Logo"
+                        class="teamLogo">Arsenal</button>
+                <button type="button" class="btn2" onclick="plotChelseaData()"><img src="Images/chelseaLogo.png"
+                        alt="Logo" class="teamLogo">Chelsea</button>
+                <button type="button" class="btn3" onclick="plotUnitedData()"><img src="Images/utdLogo.png" alt="Logo"
+                        class="teamLogo">Man United</button>
+                <button type="button" class="btn4" onclick="plotLiverpoolData()"><img src="Images/liverpoolLogo.png"
+                        alt="Logo" class="teamLogo">Liverpool</button>
+                <button type="button" class="btn5" onclick="plotCityData()"><img src="Images/cityLogo.png" alt="Logo"
+                        class="teamLogo">Man City</button>
+                <br><br>
+
+                <div id="bdr"></div>
+
+            </div>
+        </div>
+
+        <div id="Sentiment" class="dataToDisplay">
+            <div class="bdr">
+                <br>
+                <button type="button" class="btn1" onclick="plotArsenalSenData()"> <img src="Images/arsenalLogo.png"
+                        alt="Logo" class="teamLogo">Arsenal</button>
+                <button type="button" class="btn2" onclick="plotChelseaSenData()"> <img src="Images/chelseaLogo.png"
+                        alt="Logo" class="teamLogo">Chelsea</button>
+                <button type="button" class="btn3" onclick="plotUnitedSenData()"> <img src="Images/utdLogo.png"
+                        alt="Logo" class="teamLogo">Man United</button>
+                <button type="button" class="btn4" onclick="plotLiverpoolSenData()"> <img src="Images/liverpoolLogo.png"
+                        alt="Logo" class="teamLogo">Liverpool</button>
+                <button type="button" class="btn5" onclick="plotCitySenData()"> <img src="Images/cityLogo.png"
+                        alt="Logo" class="teamLogo">Man City</button>
+                <br><br>
+                <div id="senBdr"></div>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="footer">
+            <p>Ishaan Rahim &copy;<br></p>
+            <!-- Add social media logos from font awesome library -->
+            <a href="https://twitter.com/?lang=en" class="fa fa-twitter"></a>
+            <a href="https://www.instagram.com/" class="fa fa-instagram"></a>
+            <a href="https://www.snapchat.com/" class="fa fa-snapchat"></a>
+            <a href="https://www.youtube.com/" class="fa fa-youtube"></a>
+            <a href="https://www.facebook.com/" class="fa fa-facebook"></a>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script>
+    // Connect to webSocket
+    let connection = new WebSocket("wss://577h81r6k8.execute-api.us-east-1.amazonaws.com/prod");
+    connection.onopen = function (event) {
+        console.log("Connected: " + JSON.stringify(event));
+        sendMessage();
+    };
+
+    // Function to send a message to the server
+    function sendMessage() {
+        // Message that will be sent to the server
+        let msgObject = {
+            action: "sendMessage",
+            data: ""
+        };
+
+        // Sending msg
+        connection.send(JSON.stringify(msgObject));
+        console.log("Message sent: " + JSON.stringify(msgObject));
+    }
+    // -------------------------Sentiment Functionality-----------------------------------
+    // Function to get data from websockets and plot data in pie chart for arsenal data
+    function plotArsenalSenData() {
+        connection.onmessage = function (msg) {
+            arsenalSentiment(msg);
+        }
+        // Gets data after user clicks on button
+        sendMessage();
+    }
+    // Function to get data from websockets and plot data in pie chart for chelsea data
+    function plotChelseaSenData() {
+        connection.onmessage = function (msg) {
+            chelseaSentiment(msg);
+        }
+        sendMessage();
+    }
+    // Function to get data from websockets and plot data in pie chart for liverpool data
+    function plotLiverpoolSenData() {
+        connection.onmessage = function (msg) {
+            liverpoolSentiment(msg);
+        }
+        sendMessage();
+    }
+    // Function to get data from websockets and plot data in pie chart for man united data
+    function plotUnitedSenData() {
+        connection.onmessage = function (msg) {
+            unitedSentiment(msg);
+        }
+        sendMessage();
+    }
+    // Function to get data from websockets and plot data in pie chart for man city data
+    function plotCitySenData() {
+        connection.onmessage = function (msg) {
+            citySentiment(msg);
+        }
+        sendMessage();
+    }
+    // Function to retrieve average arsenal sentiment from cloud and plot data in pie chart
+    function arsenalSentiment(msg) {
+        // Array to store the x axis elements 
+        let xArray = ["Positive", "Negative", "Neutral", "Mixed"];
+        // Read and store data sent by websockets 
+        let averages = JSON.parse(msg.data);
+
+        // Get data from data structure and store averages in respective variables
+        let averagePositive = averages.Arsenal.sentiment.positive;
+        let averageNegative = averages.Arsenal.sentiment.negative;
+        let averageNeutral = averages.Arsenal.sentiment.neutral;
+        let averageMixed = averages.Arsenal.sentiment.mixed;
+        // Push elements to array to store y axis elements
+        let yArray = [averagePositive, averageNegative, averageNeutral, averageMixed];
+
+        // Call function to plot graph with x and y arrays and "Arsenal" as title name
+        plotPieChart(xArray, yArray, "Arsenal");
+    }
+    // Function to retrieve average chelsea sentiment from cloud and plot data in pie chart
+    function chelseaSentiment(msg) {
+        // Array to store the x axis elements 
+        var xArray = ["Positive", "Negative", "Neutral", "Mixed"];
+        // Read and store data sent by websockets 
+        let averages = JSON.parse(msg.data);
+
+        // Log chelsea results
+        console.log(JSON.stringify(averages.Chelsea));
+        // Get data from data structure and store averages in respective variables
+        let averagePositive = averages.Chelsea.sentiment.positive;
+        let averageNegative = averages.Chelsea.sentiment.negative;
+        let averageNeutral = averages.Chelsea.sentiment.neutral;
+        let averageMixed = averages.Chelsea.sentiment.mixed;
+        let yArray = [averagePositive, averageNegative, averageNeutral, averageMixed];
+
+        // Call function to plot graph with x and y arrays and "Chelsea" as title name
+        plotPieChart(xArray, yArray, "Chelsea");
+    }
+    // Function to retrieve average liverpool sentiment from cloud and plot data in pie chart
+    function liverpoolSentiment(msg) {
+        var xArray = ["Positive", "Negative", "Neutral", "Mixed"];
+        // Read and store data sent by websockets 
+        let averages = JSON.parse(msg.data);
+
+        // Log liverpool results
+        console.log(JSON.stringify(averages.Liverpool));
+        // Get data from data structure and store averages in respective variables
+        let averagePositive = averages.Liverpool.sentiment.positive;
+        let averageNegative = averages.Liverpool.sentiment.negative;
+        let averageNeutral = averages.Liverpool.sentiment.neutral;
+        let averageMixed = averages.Liverpool.sentiment.mixed;
+        let yArray = [averagePositive, averageNegative, averageNeutral, averageMixed];
+
+        // Call function to plot graph with x and y arrays and "Liverpool" as title name
+        plotPieChart(xArray, yArray, "Liverpool");
+    }
+    // Function to retrieve average city sentiment from cloud and plot data in pie chart
+    function citySentiment(msg) {
+        let xArray = ["Positive", "Negative", "Neutral", "Mixed"];
+        // Read and store data sent by websockets 
+        let averages = JSON.parse(msg.data);
+
+        // Log city results
+        console.log(JSON.stringify(averages.City));
+
+        // Get data from data structure and store averages in respective variables
+        let averagePositive = averages.City.sentiment.positive;
+        let averageNegative = averages.City.sentiment.negative;
+        let averageNeutral = averages.City.sentiment.neutral;
+        let averageMixed = averages.City.sentiment.mixed;
+        let yArray = [averagePositive, averageNegative, averageNeutral, averageMixed];
+
+        // Call function to plot graph with x and y arrays and "Man City" as title name
+        plotPieChart(xArray, yArray, "Man City");
+    }
+    // Function to retrieve average united sentiment from cloud and plot data in pie chart
+    function unitedSentiment(msg) {
+        let xArray = ["Positive", "Negative", "Neutral", "Mixed"];
+        let averages = JSON.parse(msg.data);
+
+        // Log city results
+        console.log(JSON.stringify(averages.United));
+
+        let averagePositive = averages.United.sentiment.positive;
+        let averageNegative = averages.United.sentiment.negative;
+        let averageNeutral = averages.United.sentiment.neutral;
+        let averageMixed = averages.United.sentiment.mixed;
+        let yArray = [averagePositive, averageNegative, averageNeutral, averageMixed];
+
+        // Call function to plot graph with x and y arrays and "Man United" as title name
+        plotPieChart(xArray, yArray, "Man United");
+    }
+    // ------------------------------------------------------------
+
+    // Function to create tabs to load with JavaScript
+    function switchTabs(event, selectedTab) {
+        let dataToDisplay = document.getElementsByClassName("dataToDisplay");
+        for (let i = 0; i < dataToDisplay.length; i++) {
+            // Hide element
+            dataToDisplay[i].style.display = "none";
+        }
+        let linkOfTab = document.getElementsByClassName("linkOfTab");
+        for (let i = 0; i < linkOfTab.length; i++) {
+            // Leave class name empty if another tab is selected
+            linkOfTab[i].className = linkOfTab[i].className.replace(" active", "");
+        }
+        // Return display type of ID
+        document.getElementById(selectedTab).style.display = "flex";
+        // Change the class of the tab clicked based on event to active
+        event.currentTarget.className += " active";
+    }
+    // Make tab open instantly
+    document.getElementById("defaultPage").click();
+
+    // Function to plot all arsenal numerical data
+    function plotData() {
+        arsenalNumerical();
+        sendMessage();
+    }
+    // Function to plot all chelsea numerical data
+    function plotChelseaData() {
+        connection.onmessage = function (msg) {
+            // Call function to get all data from passed in msg
+            chelseaNumerical(msg);
+        }
+        // Send message once user clicks button
+        sendMessage();
+    }
+    function plotLiverpoolData() {
+        connection.onmessage = function (msg) {
+            // Call function to get all data from passed in msg
+            liverpoolNumerical(msg);
+        }
+        // Send message once user clicks button
+        sendMessage();
+    }
+    function plotUnitedData() {
+        connection.onmessage = function (msg) {
+            // Call function to get all data from passed in msg
+            unitedNumerical(msg);
+        }
+        // Send message once user clicks button
+        sendMessage();
+    }
+    function plotCityData() {
+        connection.onmessage = function (msg) {
+            // Call function to get all data from passed in msg
+            cityNumerical(msg);
+        }
+        // Send message once user clicks button
+        sendMessage();
+    }
+    let date = new Date();
+    /* Function to get all arsenal numerical data including x and y values sent from the cloud 
+        to then store in array and plot the graph with*/
+    async function arsenalNumerical() {
+        connection.onmessage = async function (msg) {
+            // Make sure msg is not undefined otherwise send message again
+            if (msg === undefined) {
+                sendMessage();
+                return;
+            }
+            // Create arrays relevant arrays to draw graph
+            let xArray = [];
+            let yArray = [];
+            let predictionsY = [];
+            let predictionsX = [];
+            let quantile1Y = [];
+            let quantile9Y = [];
+
+            // Parse msg data to get all arsenal numerical data
+            let numericalData = (await JSON.parse(msg.data));
+            // Make sure numericalData.Arsenal
+            if (numericalData.Arsenal === undefined) {
+                console.log(msg.data);
+                return;
+            }
+            // Loop through all x values and store in array
+            numericalData.Arsenal.actual.x.forEach(records => {
+                let date = new Date(records);
+                xArray.push(date);
+                console.log(date);
+            });
+            // Loop through all y values and store in array
+            numericalData.Arsenal.actual.y.forEach(records => {
+                yArray.push(records);
+            });
+            // Loop through all mean predictions y values and store in array
+            numericalData.Arsenal.predictions.y.forEach(records => {
+                predictionsY.push(records);
+            });
+            // Loop through all quantile 0.1 predictions y values and store in array
+            numericalData.Arsenal.predictions.quantile1.forEach(records => {
+                quantile1Y.push(records);
+            });
+            // Loop through all quantile 0.9 predictions y values and store in array
+            numericalData.Arsenal.predictions.quantile9.forEach(records => {
+                quantile9Y.push(records);
+            });
+            console.log(xArray.length);
+            console.log(yArray.length);
+            console.log(predictionsY.length);
+
+            predictionsX = xArray.slice(xArray.length - 1);
+
+
+            // Get the last day from the original data to generate future dates to plot predictions
+            let lastDate = new Date(predictionsX[predictionsX.length - 1]);
+
+            let date = new Date(lastDate);
+            console.log(date);
+
+            // For loop to generate the next 50 dates to push to x array for predictions to be displayed in graph
+            for (let i = 0; i < predictionsY.length; i++) {
+                lastDate.setDate(lastDate.getDate() + 7);
+                let date = new Date(lastDate);
+                predictionsX.push(date);
+            }
+            // Calls function to create graph with team name, original data, predictions data and colour of graph
+            createGraph("Arsenal", xArray, yArray, predictionsX, predictionsY, 'rgb(219, 64, 82)', quantile1Y, quantile9Y);
+        }
+    }
+    /* Function to get all chelsea numerical data including x and y values sent from the cloud 
+        to then store in array and plot the graph with */
+    async function chelseaNumerical(msg) {
+        let chelseaNumerical = (await JSON.parse(msg.data));
+        let xArray = [];
+        let yArray = [];
+        let predictionsX = [];
+        let predictionsY = [];
+        let quantile1Y = [];
+        let quantile9Y = [];
+
+        // Populate arrays with data from the cloud to plot graphs
+        chelseaNumerical.Chelsea.actual.x.forEach(records => {
+            let date = new Date(records);
+            xArray.push(date);
+            console.log(date);
+        });
+        chelseaNumerical.Chelsea.actual.y.forEach(records => {
+            yArray.push(records);
+        });
+        chelseaNumerical.Chelsea.predictions.y.forEach(records => {
+            predictionsY.push(records);
+        });
+        chelseaNumerical.Chelsea.predictions.quantile1.forEach(records => {
+            quantile1Y.push(records);
+        });
+        chelseaNumerical.Chelsea.predictions.quantile9.forEach(records => {
+            quantile9Y.push(records);
+        });
+        predictionsX = xArray.slice(xArray.length - 1);
+
+        // Get the last day from the original data to generate future dates to plot predictions
+        let lastDate = new Date(predictionsX[predictionsX.length - 1]);
+
+        let date = new Date(lastDate);
+        console.log(date);
+
+        // For loop to generate the next 50 dates to push to x array for predictions to be displayed in graph
+        for (let i = 0; i < predictionsY.length; i++) {
+            lastDate.setDate(lastDate.getDate() + 7);
+            let date = new Date(lastDate);
+            predictionsX.push(date);
+        }
+        // Calls function to create graph with team name, original data, predictions data and colour of graph
+        createGraph("Chelsea", xArray, yArray, predictionsX, predictionsY, 'rgb(0, 64, 225)', quantile1Y, quantile9Y);
+
+    }
+    /* Function to get all liverpool numerical data including x and y values sent from the cloud 
+        to then store in array and plot the graph with */
+    async function liverpoolNumerical(msg) {
+        let liverpoolNumerical = (await JSON.parse(msg.data));
+        let xArray = [];
+        let yArray = [];
+        let predictionsX = [];
+        let predictionsY = [];
+        let quantile1Y = [];
+        let quantile9Y = [];
+
+        // Populate arrays with data from the cloud to plot graphs
+        liverpoolNumerical.Liverpool.actual.x.forEach(records => {
+            let date = new Date(records);
+            xArray.push(date);
+            console.log(date);
+        });
+        liverpoolNumerical.Liverpool.actual.y.forEach(records => {
+            yArray.push(records);
+        });
+        liverpoolNumerical.Liverpool.predictions.y.forEach(records => {
+            predictionsY.push(records);
+        });
+        liverpoolNumerical.Liverpool.predictions.quantile1.forEach(records => {
+            quantile1Y.push(records);
+        });
+        liverpoolNumerical.Liverpool.predictions.quantile9.forEach(records => {
+            quantile9Y.push(records);
+        });
+        predictionsX = xArray.slice(xArray.length - 1);
+
+        // Get the last day from the original data to generate future dates to plot predictions
+        let lastDate = new Date(predictionsX[predictionsX.length - 1]);
+
+        let date = new Date(lastDate);
+        console.log(date);
+
+        // For loop to generate the next 50 dates to push to x array for predictions to be displayed in graph
+        for (let i = 0; i < predictionsY.length; i++) {
+            lastDate.setDate(lastDate.getDate() + 7);
+            let date = new Date(lastDate);
+            predictionsX.push(date);
+        }
+        // Calls function to create graph with team name, original data, predictions data and colour of graph
+        createGraph("Liverpool", xArray, yArray, predictionsX, predictionsY, 'rgb(200, 16, 46)', quantile1Y, quantile9Y);
+    }
+    /* Function to get all united numerical data including x and y values sent from the cloud 
+        to then store in array and plot the graph with */
+    async function unitedNumerical(msg) {
+        let unitedNumerical = (await JSON.parse(msg.data));
+        let xArray = [];
+        let yArray = [];
+        let predictionsX = [];
+        let predictionsY = [];
+        let quantile1Y = [];
+        let quantile9Y = [];
+        // Populate arrays with data from the cloud to plot graphs      
+        unitedNumerical.United.actual.x.forEach(records => {
+            let date = new Date(records);
+            xArray.push(date);
+            console.log(date);
+        });
+        unitedNumerical.United.actual.y.forEach(records => {
+            yArray.push(records);
+        });
+        unitedNumerical.United.predictions.y.forEach(records => {
+            predictionsY.push(records);
+        });
+        unitedNumerical.United.predictions.quantile1.forEach(records => {
+            quantile1Y.push(records);
+        });
+        unitedNumerical.United.predictions.quantile9.forEach(records => {
+            quantile9Y.push(records);
+        });
+        predictionsX = xArray.slice(xArray.length - 1);
+
+        // Get the last day from the original data to generate future dates to plot predictions
+        let lastDate = new Date(predictionsX[predictionsX.length - 1]);
+
+        let date = new Date(lastDate);
+        console.log(date);
+
+        // For loop to generate the next 50 dates to push to x array for predictions to be displayed in graph
+        for (let i = 0; i < predictionsY.length; i++) {
+            lastDate.setDate(lastDate.getDate() + 7);
+            let date = new Date(lastDate);
+            predictionsX.push(date);
+        }
+        // Calls function to create graph with team name, original data, predictions data and colour of graph
+        createGraph("Man United", xArray, yArray, predictionsX, predictionsY, 'rgb(218, 41, 28)', quantile1Y, quantile9Y);
+    }
+    /* Function to get all city numerical data including x and y values sent from the cloud 
+        to then store in array and plot the graph with */
+    async function cityNumerical(msg) {
+        let cityNumerical = (await JSON.parse(msg.data));
+        let xArray = [];
+        let yArray = [];
+        let predictionsX = [];
+        let predictionsY = [];
+        let quantile1Y = [];
+        let quantile9Y = [];
+
+        // Populate arrays with data from the cloud to plot graphs
+        cityNumerical.City.actual.x.forEach(records => {
+            let date = new Date(records);
+            xArray.push(date);
+            console.log(date);
+        });
+        cityNumerical.City.actual.y.forEach(records => {
+            yArray.push(records);
+        });
+        cityNumerical.City.predictions.y.forEach(records => {
+            predictionsY.push(records);
+        });
+        cityNumerical.City.predictions.quantile1.forEach(records => {
+            quantile1Y.push(records);
+        });
+        cityNumerical.City.predictions.quantile9.forEach(records => {
+            quantile9Y.push(records);
+        });
+        predictionsX = xArray.slice(xArray.length - 1);
+
+        // Get the last day from the original data to generate future dates to plot predictions
+        let lastDate = new Date(predictionsX[predictionsX.length - 1]);
+
+        let date = new Date(lastDate);
+        console.log(date);
+
+        // For loop to generate the next 50 dates to push to x array for predictions to be displayed in graph
+        for (let i = 0; i < predictionsY.length; i++) {
+            lastDate.setDate(lastDate.getDate() + 7);
+            let date = new Date(lastDate);
+            predictionsX.push(date);
+        }
+        // Calls function to create graph with team name, original data, predictions data and colour of graph
+        createGraph("Man City", xArray, yArray, predictionsX, predictionsY, 'rgb(135, 206, 235)', quantile1Y, quantile9Y);
+    }
+    // Function to create graph after recieving arrays as parameters
+    function createGraph(teamName, xArray, yArray, xPredictions, yPredictions, colour, YQuantile1, YQuantile9) {
+        // Set trace to display graph from the cloud
+        let trace = {
+            x: xArray,
+            y: yArray,
+            // set mode and type and title as team name where data is from
+            mode: 'lines',
+            type: "scatter",
+            name: teamName,
+            marker: {
+                color: colour,
+                size: 12
+            }
+        };
+        // Define x and y values for predictions of a particular team
+        let predictions = {
+            x: xPredictions,
+            y: yPredictions,
+            mode: 'lines',
+            type: "scatter",
+            name: "Predictions",
+            marker: {
+                color: 'rgb(255, 255, 0)',
+                size: 12
+            }
+        };
+        // Define x and y values for quantile 0.1 predictions of a particular team
+        let quantile1 = {
+            x: xPredictions,
+            y: YQuantile1,
+            mode: 'lines',
+            type: "scatter",
+            name: "Prediction 0.1 Quantile",
+            marker: {
+                color: 'rgb(0, 178, 169)',
+                size: 12
+            }
+        };
+        // Define x and y values for quantile 0.9 predictions of a particular team
+        let quantile9 = {
+            x: xPredictions,
+            y: YQuantile9,
+            mode: 'lines',
+            type: "scatter",
+            name: "Prediction 0.9 Quantile",
+            marker: {
+                color: 'rgb(255, 127, 80)',
+                size: 12
+            }
+        };
+
+        let layout = {
+            // Set title of graph, colour and remove any default background colour
+            title: teamName + " Numerical and Predictions",
+            plot_bgcolor: "black",
+            paper_bgcolor: "rgba(0,0,0,0)",
+        };
+
+        // Adding all data that will be displayed on graph to data array
+        let data = [trace, predictions, quantile1, quantile9];
+
+        // Plot graph with defined data and layout, and declare which id to display in
+        Plotly.newPlot("bdr", data, layout);
+    }
+    function plotPieChart(xArray, yArray, teamName) {
+        // Set trace to display graph from the cloud in a pie chart
+        let trace = {
+            labels: xArray,
+            values: yArray,
+            type: "pie",
+        };
+        // Style layout of pie chart
+        let layout = {
+            title: teamName + " Sentiment",
+            paper_bgcolor: "rgba(0,0,0,0)",
+            margin: {
+                l: 100,
+                r: 20,
+                b: 5,
+                t: 50,
+                pad: 50
+            },
+            showlegend: true,
+            legend: {
+                font: {
+                    family: 'sans-serif',
+                    size: 12,
+                    color: 'black'
+                },
+            }
+        };
+        let data = [trace];
+        // Define id to plot graph and with correct data
+        Plotly.newPlot("senBdr", data, layout);
+    }
+</script>
